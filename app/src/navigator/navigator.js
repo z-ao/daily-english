@@ -7,6 +7,7 @@ const TabNavigatorConfig = {
   tabBarPosition: 'bottom',
   lazy: true,
   animationEnabled: false,
+  swipeEnabled: false,
   tabBarOptions: {
     activeTintColor: '#4fb7f8',
     inactiveTintColor: '#83817E',
