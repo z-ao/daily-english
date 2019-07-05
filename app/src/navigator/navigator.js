@@ -3,7 +3,7 @@ import { createAppContainer, createMaterialTopTabNavigator } from 'react-navigat
 import RouteConfigs from './route';
 
 const TabNavigatorConfig = {
-  initialRouteName: 'index',
+  initialRouteName: 'my',
   tabBarPosition: 'bottom',
   lazy: true,
   animationEnabled: false,
