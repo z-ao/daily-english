@@ -10,22 +10,22 @@ Page({
 
 		cardData: [
 			{
-				id: 1,
-				word: 'Hello',
-        spell: 'aaa',
-        translation: '黄海(中国三大边缘海之一,北起鸭绿江口,南以长江口北岸到朝鲜济州岛一线同东海分界,西以渤海海峡与渤海相连)'
+				id: 53975,
+				word: 'enwrap',
+        spell: "in'ræp",
+        translation: 'vt. 围绕, 包围'
 			},
 			{
-				id: 2,
-				word: 'Hello1',
-        spell: 'aaa',
-        translation: '黄海(中国三大边缘海之一,北起鸭绿江口,南以长江口北岸到朝鲜济州岛一线同东海分界,西以渤海海峡与渤海相连)'
+				id: 130414,
+				word: 'priggism',
+        spell: "'prigizm",
+        translation: 'n. 自负, 偷窃行为, 古板, 沾沾自喜'
 			},
 			{
-				id: 3,
-				word: 'Hello2',
-        spell: 'aaa',
-        translation: '黄海(中国三大边缘海之一,北起鸭绿江口,南以长江口北岸到朝鲜济州岛一线同东海分界,西以渤海海峡与渤海相连)'
+				id: 154655,
+				word: 'spinous',
+        spell: "'spainәs",
+        translation: 'a. 多刺的, 刺状的, 尖尖的\n[医] 棘状的; 棘的, 刺的; 棘突的'
 			}
 		],
 		cardStyle: '',

@@ -5,6 +5,8 @@ const { windowWidth } = wx.getSystemInfoSync();
 const DESIGN_WIDTH = 750; //设计图宽度
 const scaling = (rpx) => windowWidth / DESIGN_WIDTH * rpx;
 
+let dustIndex = 0;
+let dustArr = []
 Component({
     /**
      * 组件的属性列表
@@ -23,43 +25,46 @@ Component({
      * 组件的初始数据
      */
     data: {
-        show: false,
-        top: 0,
-        left: 0,
-        ctx: null
+        ctx: null,
+        dustArr: []
     },
 
-    ready() {
-        const ctx = wx.createCanvasContext('dust', this);
-        this.setData({ ctx });
-    },
 
     /**
      * 组件的方法列表
      */
     methods: {
-        async dustAnimal(cardData, top, left) {
-            this.setData({ top, left, show: true});
+        dustAnimal(cardData, top, left) {
 
-            const { ctx } = this.data;
-            const $ctx = await getBoundingClientRect('#dust', this);
-            const { width: ctxWidth, height: ctxHeight } = $ctx;
+            const id = dustIndex++;
+            const dustItem = { id, top, left };
+            dustArr.push(dustItem);
 
-            //绘制canvas
-            this._drawWordText(ctx, ctxWidth, cardData.word);
-            this._drawSpellText(ctx, ctxWidth, cardData.spell);
-            this._drawTranslationText(ctx, ctxWidth, cardData.translation);
-            ctx.draw();
+            this.setData({ dustArr }, async() => {
+                const ctx = wx.createCanvasContext(`dust${id}`, this);
+                const $ctx = await getBoundingClientRect(`#dust${id}`, this);
 
-            //画布生成arrayBuffer 获取显示像素 实现动画
-            const arrayBuffer = await this._canvasToArrayBuffer('dust', ctxWidth, ctxHeight);
-            const particleArr = this._calculateParticle(arrayBuffer, arrayBuffer.width / 2, arrayBuffer.height / 2);
-            const timer = setInterval(() => {
-                this._drawParticle(particleArr, ctx, () => {
-                    clearInterval(timer);
-                    this.setData({ show: false });
-                });
-            }, 120);
+                const { width: ctxWidth, height: ctxHeight } = $ctx;
+
+                //绘制canvas
+                this._drawWordText(ctx, ctxWidth, cardData.word);
+                this._drawSpellText(ctx, ctxWidth, cardData.spell);
+                this._drawTranslationText(ctx, ctxWidth, cardData.translation);
+                ctx.draw();
+
+                // //画布生成arrayBuffer 获取显示像素 实现动画
+                const arrayBuffer = await this._canvasToArrayBuffer(`dust${id}`, ctxWidth, ctxHeight);
+                const particleArr = this._calculateParticle(arrayBuffer, arrayBuffer.width / 2, arrayBuffer.height / 2);
+                const timer = setInterval(() => {
+                    this._drawParticle(particleArr, ctx, () => {
+                        clearInterval(timer);
+                        const index = dustArr.findIndex(item => item.id === id);
+                        dustArr.splice(index, 1);
+
+                        this.setData({ dustArr });
+                    });
+                }, 120);
+            });
         },
 
         //把canvas转成ArrayBuffer
