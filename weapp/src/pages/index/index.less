@@ -31,10 +31,12 @@
       border-radius: 25rpx;
       box-shadow: 0 6rpx 10rpx rgba(0,0,0,.1);
       transform-style: preserve-3d;
+      transition-duration: .4s;
+      transition-timing-function: linear;
 
       .loop(@i) when (@i <= 3){
         &:nth-child(@{i}){
-          transform: translate3d( 0, 0, (@i - 1) * -190rpx);
+          transform: translate3d(0, 0, (@i - 1) * -300rpx);
           z-index: 4 - @i;
         }
         .loop(@i+1);
@@ -82,9 +84,6 @@
         height: 70rpx;
         transition: all .5s;
       }
-    }
-    .card--touch{
-      transition: all .4s linear;
     }
   }
 }

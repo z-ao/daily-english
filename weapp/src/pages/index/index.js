@@ -5,7 +5,6 @@ import { throttle, getBoundingClientRect, isRectOverWindow } from '../../utils/d
 let cardPointX = 0, cardPointY = 0;
 
 Page({
-
 	data: {
 		isPlay: false,
 
@@ -29,10 +28,10 @@ Page({
         translation: '黄海(中国三大边缘海之一,北起鸭绿江口,南以长江口北岸到朝鲜济州岛一线同东海分界,西以渤海海峡与渤海相连)'
 			}
 		],
-		touchIng: null,
+		cardStyle: '',
 		cardPoint: {
-			top: 0,
-			left: 0
+			cardPointX: 0,
+			cardPointY: 0
 		}
 	},
 
@@ -48,41 +47,57 @@ Page({
 		cardPointX = clientX;
 		cardPointY = clientY;
 
-		this.setData({ touchIng: true });
+		this.touchStyle('start');
 	},
 
 	cardTouchmove: throttle(function(evt) {
 		const { clientX, clientY } = evt.changedTouches[0];
 
 		this.setData({
-			'cardPoint.top': clientY - cardPointY,
-			'cardPoint.left': clientX - cardPointX
+			'cardPoint.cardPointY': clientY - cardPointY,
+			'cardPoint.cardPointX': clientX - cardPointX
 		});
 	}, 200),
 
 	async cardTouchend() {
 		const cardRect = await getBoundingClientRect('.card');
-		if (isRectOverWindow(cardRect)) {
+		const isRemove = isRectOverWindow(cardRect);
+
+		if (isRemove) {
 			const { cardData } = this.data;
 			const card = cardData.shift();
 
 			const dustComponent = this.selectComponent('#dust');
 			dustComponent.dustAnimal(card, cardRect.top, cardRect.left);
 
+			cardData.push(card);
 			this.setData({ cardData });
 		}
-		console.log(isRectOverWindow(cardRect), cardRect)
-		this.clearCardState();
-	},
 
-	clearCardState() {
+		this.touchStyle(isRemove ? 'remove' : 'end');
+
 		cardPointX = cardPointY = 0;
 		this.setData({ 
-			touchIng: false,
-			cardPoint: {
-				top: 0,
-				left: 0
-			}
+			cardPoint: { cardPointX, cardPointY },
+			isPlay: false
 		});
+	},
+
+	touchStyle(state) {
+		if (state === 'start' || state === 'end') {
+			this.setData({ cardStyle: 'transition-property: top, left; '});
+		}
+
+		if (state === 'remove') {
+			const transitionProp = 'transition-property: none;';
+			const transform = 'transform: translate3d(0, 0, -300rpx);';
+			this.setData({ cardStyle: transitionProp + transform});
+
+			setTimeout(() => {
+				const transitionProp = 'transition-property: transform;';
+				const transform = 'transform: translate3d(0, 0, 0);';
+				this.setData({ cardStyle: transitionProp + transform});
+			}, 0);
+		}
 	}
 });

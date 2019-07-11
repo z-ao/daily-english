@@ -3,12 +3,12 @@
 	<view class="card__container">
 		<block wx:for="{{cardData}}" wx:key="{{item.id}}">
 		  <view wx:if="{{index === 0}}"
-		  	class="card {{ touchIng ? 'card--touch' : ''}} "
+		  	class="card"
 		  	bind:touchstart="cardTouchstart"
 		  	bind:touchmove="cardTouchmove"
 		  	bind:touchcancel="cardTouchend"
 		  	bind:touchend="cardTouchend"
-		  	style="top: {{cardPoint.top}}px; left: {{cardPoint.left}}px;">
+		  	style="top: {{cardPoint.cardPointY}}px; left: {{cardPoint.cardPointX}}px; {{ cardStyle }}">
 		    <view class="content">
 		      <text class="word">{{item.word}}</text>
 		      <text class="spell">{{item.spell}}</text>
