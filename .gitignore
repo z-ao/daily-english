@@ -26,3 +26,5 @@ bin-release/
 */run
 */env
 **/word/*
+
+weapp/**/project.config.json

@@ -1,0 +1,16 @@
+<view class="page">
+    <view class="page-msg">
+        <view class="page-msg__icon-area">
+            <icon type="info" size="93"></icon>
+        </view>
+        <view class="page-msg__text-area">
+            <view class="page-msg__title">申请授权</view>
+            <view class="page-msg__desc">为了提供更友好的服务,需要授权获取微信信息</view>
+        </view>
+        <view class="page-msg__opr-area">
+            <view class="page-btn-area">
+                <button class="page-btn" type="primary" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">确认授权</button>
+            </view>
+        </view>
+    </view>
+</view>

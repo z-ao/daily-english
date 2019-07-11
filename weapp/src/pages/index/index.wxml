@@ -1,0 +1,40 @@
+<!--index.wxml-->
+<view class="container">
+	<view class="card__container">
+		<block wx:for="{{cardData}}" wx:key="{{item.id}}">
+		  <view wx:if="{{index === 0}}"
+		  	class="card"
+		  	bind:touchstart="cardTouchstart"
+		  	bind:touchmove="cardTouchmove"
+		  	bind:touchcancel="cardTouchend"
+		  	bind:touchend="cardTouchend"
+		  	style="top: {{cardPoint.cardPointY}}px; left: {{cardPoint.cardPointX}}px; {{ cardStyle }}">
+		    <view class="content">
+		      <text class="word">{{item.word}}</text>
+		      <text class="spell">{{item.spell}}</text>
+		      <text class="translation">{{item.translation}}</text>
+		    </view>
+		    <image 
+		    	src="{{ isPlay ? '../../assets/image/audio_play_active.svg' : '../../assets/image/audio_play.svg'}}" 
+		    	mode="aspectFit"
+		    	class="card-play"
+		    	bindtap="playEvent"></image>
+		  </view>
+
+		  <view wx:else 
+		  	class="card">
+		    <view class="content">
+		      <text class="word">{{item.word}}</text>
+		      <text class="spell">{{item.spell}}</text>
+		      <text class="translation">{{item.translation}}</text>
+		    </view>
+		    <image 
+		    	src="../../assets/image/audio_play.svg" 
+		    	mode="aspectFit"
+		    	class="card-play"
+		    	bindtap="playEvent"></image>
+		  </view>
+	  </block>
+	</view>
+	<c-dust-card class="dust-card" id="dust" card-data="{{ cardData[0] }}"></c-dust-card>
+</view>

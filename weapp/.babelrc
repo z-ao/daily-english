@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "@babel/preset-stage-3"
+    ]
+  ],
+  "plugins": [
+    [
+      "@babel/transform-runtime",
+      {
+        "regenerator": true,
+      }
+    ]
+  ]
+}

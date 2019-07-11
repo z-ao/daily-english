@@ -1,0 +1,4 @@
+<view class="dust__contaienr"
+  style="top: {{ show ? top : -1000}}px; left: {{show ? left : -1000}}px;">
+  <canvas canvas-id="dust" id="dust" class="main-canvas"></canvas>
+</view>

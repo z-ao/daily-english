@@ -1,18 +1,17 @@
 'use strict';
-
 const Service = require('egg').Service;
+const { Op, literal} = require('sequelize');
 
 class WordService extends Service{
-  async information(word=''){
-    const translation = await this.ctx.model.Word.findOne({
-      where: {
-        word
-      },
-      attributes: ['word', 'translation']
-    });
-    const voiceUrl = `/public/word/${word.slice(0, 1)}/${word}.mp3`;
-    return { translation, voiceUrl };
-  }
+	async random(queryCount){
+		const data = await this.ctx.model.Word.findAll({
+		  order: literal('rand()'),
+		  limit: queryCount,
+		  attributes: ['id', 'word', 'translation', 'phonetic']
+		});
+		
+		return data;
+	}
 }
 
 module.exports = WordService;

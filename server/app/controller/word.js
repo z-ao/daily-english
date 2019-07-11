@@ -3,11 +3,22 @@
 const Controller = require('egg').Controller;
 
 class WordController extends Controller {
-  async show() {
+  async random() {
     const { ctx } = this;
-    const word = ctx.query.search || '';
-    const information = await ctx.service.word.information(word);
-    ctx.body = information;
+
+    //获取随机单词
+    const count = ctx.query.count || 10;
+    const wordRandom = await ctx.service.word.random(count);
+
+    //设置单词录音
+    const { protocol, host } = ctx;
+    const domain = `${protocol}://${host}`;
+    const audioURL = (word) => `${domain}/public/word/${word.slice(0, 1)}/${word}.mp3`;
+    wordRandom.forEach(item => {
+      item.dataValues.audio = audioURL(item.word);
+    });
+
+    ctx.body = wordRandom;
   }
 }
 
