@@ -12,19 +12,19 @@ Page({
 			{
 				id: 53975,
 				word: 'enwrap',
-        spell: "in'ræp",
+        spell: "/in'ræp/",
         translation: 'vt. 围绕, 包围'
 			},
 			{
 				id: 130414,
 				word: 'priggism',
-        spell: "'prigizm",
+        spell: "/'prigizm/",
         translation: 'n. 自负, 偷窃行为, 古板, 沾沾自喜'
 			},
 			{
 				id: 154655,
 				word: 'spinous',
-        spell: "'spainәs",
+        spell: "/'spainәs/",
         translation: 'a. 多刺的, 刺状的, 尖尖的\n[医] 棘状的; 棘的, 刺的; 棘突的'
 			}
 		],
@@ -91,13 +91,11 @@ Page({
 		if (state === 'remove') {
 			const transitionProp = 'transition-property: none;';
 			const transform = 'transform: translate3d(0, 0, -300rpx);';
-			this.setData({ cardStyle: transitionProp + transform});
-
-			setTimeout(() => {
+			this.setData({ cardStyle: transitionProp + transform}, () => {
 				const transitionProp = 'transition-property: transform;';
 				const transform = 'transform: translate3d(0, 0, 0);';
 				this.setData({ cardStyle: transitionProp + transform});
-			}, 0);
+			});
 		}
 	}
 });
