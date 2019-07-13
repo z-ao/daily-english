@@ -1,10 +1,10 @@
-import regeneratorRuntime from '../../plugins/regenerator-runtime';
+import regeneratorRuntime from '../../plugins/regenerator-runtime'
 
-import { throttle, getBoundingClientRect, isRectOverWindow } from '../../utils/dom';
-import wordModel from '../../models/word';
+import { throttle, getBoundingClientRect, isRectOverWindow } from '../../utils/dom'
+import wordModel from '../../models/word'
 
 //卡片 拖拽
-let cardPointX = 0, cardPointY = 0;
+let cardPointX = 0, cardPointY = 0
 
 Page({
 	wordAudio: null,
@@ -20,94 +20,100 @@ Page({
 	},
 
 	onLoad() {
-		this.initWordAudio();
+		this.initWordAudio()
 
 		//获取单词数据
 		wordModel.random().then(res => {
-			this.setData({ cardData: res });
+			this.setData({ cardData: res })
 		})
 	},
 
 	initWordAudio() {
-		const audioInstance = wx.createInnerAudioContext();
-		audioInstance.onStop(() => {
-			this.setData({ isPlay: false });
-		});
+		const audioInstance = wx.createInnerAudioContext()
+
+		//监听
+		audioInstance.onEnded(() => {
+			this.setData({ isPlay: false })
+		})
+		audioInstance.onError((err) => {
+			console.log(err)
+		})
+		audioInstance.onPlay( () => {}) //不监听播放失败
 
 		audioInstance.$play = (url) => {
 			if (!audioInstance.paused) { //不是暂停 停止状态
-				audioInstance.stop();
+				audioInstance.stop()
 			}
-			audioInstance.src = url;
-			audioInstance.play();
+			audioInstance.src = url
+			audioInstance.play()
 		}
 
-		this.wordAudio = audioInstance;
+		this.wordAudio = audioInstance
 	},
 
 	playAudioEvent(evt) {
-		const { isPlay } = this.data;
-		if (isPlay) return;
+		const { isPlay } = this.data
+		if (isPlay) return
 
 		//播放录音
-		this.wordAudio.$play(evt.currentTarget.dataset.audio);
+		this.wordAudio.$play(evt.currentTarget.dataset.audio)
 
 		//设置状态
-		this.setData({ isPlay: true });
+		this.setData({ isPlay: true })
 	},
 
 	cardTouchstart(evt) {
-		const { clientX, clientY } = evt.touches[0];
-		cardPointX = clientX;
-		cardPointY = clientY;
+		const { clientX, clientY } = evt.touches[0]
+		cardPointX = clientX
+		cardPointY = clientY
 
-		this.touchStyle('start');
+		this.touchStyle('start')
 	},
 
 	cardTouchmove: throttle(function(evt) {
-		const { clientX, clientY } = evt.changedTouches[0];
+		const { clientX, clientY } = evt.changedTouches[0]
 
 		this.setData({
 			'cardPoint.cardPointY': clientY - cardPointY,
 			'cardPoint.cardPointX': clientX - cardPointX
-		});
+		})
 	}, 200),
 
 	async cardTouchend() {
-		const cardRect = await getBoundingClientRect('.card');
-		const isRemove = isRectOverWindow(cardRect);
+		const cardRect = await getBoundingClientRect('.card')
+		const isRemove = isRectOverWindow(cardRect)
 
 		if (isRemove) {
-			const { cardData } = this.data;
-			const card = cardData.shift();
+			const { cardData } = this.data
+			const card = cardData.shift()
 
-			const dustComponent = this.selectComponent('#dust');
-			dustComponent.dustAnimal(card, cardRect.top, cardRect.left);
+			const dustComponent = this.selectComponent('#dust')
+			dustComponent.dustAnimal(card, cardRect.top, cardRect.left)
 
-			cardData.push(card);
-			this.setData({ cardData });
+			cardData.push(card)
+			this.setData({ cardData })
 		}
 
-		this.touchStyle(isRemove ? 'remove' : 'end');
+		this.touchStyle(isRemove ? 'remove' : 'end')
 
-		cardPointX = cardPointY = 0;
+		cardPointX = cardPointY = 0
 		this.setData({ 
 			cardPoint: { cardPointX, cardPointY }
-		});
+		})
 	},
 
 	touchStyle(state) {
 		if (state === 'start' || state === 'end') {
-			this.setData({ cardStyle: 'transition-property: top, left; '});
+			this.setData({ cardStyle: 'transition-property: top, left; '})
 		}
 
 		if (state === 'remove') {
 			const transitionProp = 'transition-property: none;';
-			const transform = 'transform: translate3d(0, 0, -300rpx);';
+			const transform = 'transform: translate3d(0, 0, -300rpx);'
 			this.setData({ cardStyle: transitionProp + transform}, () => {
-				const transitionProp = 'transition-property: transform;';
-				const transform = 'transform: translate3d(0, 0, 0);';
-				this.setData({ cardStyle: transitionProp + transform});
+				const transitionProp = 'transition-property: transform;'
+				const transform = 'transform: translate3d(0, 0, 0);'
+				this.setData({ cardStyle: transitionProp + transform})
 			});
 		}
 	}
