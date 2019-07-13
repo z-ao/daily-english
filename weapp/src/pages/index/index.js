@@ -1,45 +1,59 @@
 import regeneratorRuntime from '../../plugins/regenerator-runtime';
 
 import { throttle, getBoundingClientRect, isRectOverWindow } from '../../utils/dom';
+import wordModel from '../../models/word';
 
+//卡片 拖拽
 let cardPointX = 0, cardPointY = 0;
 
 Page({
+	wordAudio: null,
 	data: {
 		isPlay: false,
 
-		cardData: [
-			{
-				id: 53975,
-				word: 'enwrap',
-        spell: "/in'ræp/",
-        translation: 'vt. 围绕, 包围'
-			},
-			{
-				id: 130414,
-				word: 'priggism',
-        spell: "/'prigizm/",
-        translation: 'n. 自负, 偷窃行为, 古板, 沾沾自喜'
-			},
-			{
-				id: 154655,
-				word: 'spinous',
-        spell: "/'spainәs/",
-        translation: 'a. 多刺的, 刺状的, 尖尖的\n[医] 棘状的; 棘的, 刺的; 棘突的'
-			}
-		],
+		cardData: [],
 		cardStyle: '',
 		cardPoint: {
 			cardPointX: 0,
 			cardPointY: 0
-		}
+		},
 	},
 
-	playEvent() {
+	onLoad() {
+		this.initWordAudio();
+
+		//获取单词数据
+		wordModel.random().then(res => {
+			this.setData({ cardData: res });
+		})
+	},
+
+	initWordAudio() {
+		const audioInstance = wx.createInnerAudioContext();
+		audioInstance.onStop(() => {
+			this.setData({ isPlay: false });
+		});
+
+		audioInstance.$play = (url) => {
+			if (!audioInstance.paused) { //不是暂停 停止状态
+				audioInstance.stop();
+			}
+			audioInstance.src = url;
+			audioInstance.play();
+		}
+
+		this.wordAudio = audioInstance;
+	},
+
+	playAudioEvent(evt) {
 		const { isPlay } = this.data;
 		if (isPlay) return;
 
-		this.setData({ isPlay: !isPlay });
+		//播放录音
+		this.wordAudio.$play(evt.currentTarget.dataset.audio);
+
+		//设置状态
+		this.setData({ isPlay: true });
 	},
 
 	cardTouchstart(evt) {
@@ -78,8 +92,7 @@ Page({
 
 		cardPointX = cardPointY = 0;
 		this.setData({ 
-			cardPoint: { cardPointX, cardPointY },
-			isPlay: false
+			cardPoint: { cardPointX, cardPointY }
 		});
 	},
 

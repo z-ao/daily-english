@@ -11,28 +11,28 @@
 		  	style="top: {{cardPoint.cardPointY}}px; left: {{cardPoint.cardPointX}}px; {{ cardStyle }}">
 		    <view class="content">
 		      <text class="word">{{item.word}}</text>
-		      <text class="spell">{{item.spell}}</text>
+		      <text class="phonetic">{{item.phonetic}}</text>
 		      <text class="translation">{{item.translation}}</text>
 		    </view>
-<!-- 		    <image 
+		    <image 
 		    	src="{{ isPlay ? '../../assets/image/audio_play_active.svg' : '../../assets/image/audio_play.svg'}}" 
 		    	mode="aspectFit"
 		    	class="card-play"
-		    	bindtap="playEvent"></image> -->
+		    	bindtap="playAudioEvent"
+		    	data-audio="{{item.audio}}"></image>
 		  </view>
 
 		  <view wx:else 
 		  	class="card">
 		    <view class="content">
 		      <text class="word">{{item.word}}</text>
-		      <text class="spell">{{item.spell}}</text>
+		      <text class="phonetic">{{item.phonetic}}</text>
 		      <text class="translation">{{item.translation}}</text>
 		    </view>
 		    <image 
 		    	src="../../assets/image/audio_play.svg" 
 		    	mode="aspectFit"
-		    	class="card-play"
-		    	bindtap="playEvent"></image>
+		    	class="card-play"></image>
 		  </view>
 	  </block>
 	</view>

@@ -21,7 +21,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      display: flex;
+      display: none;
       flex-direction: column;
       align-items: center;
       height: 100%;
@@ -36,6 +36,7 @@
 
       .loop(@i) when (@i <= 3){
         &:nth-child(@{i}){
+          display: flex;
           transform: translate3d(0, 0, (@i - 1) * -300rpx);
           z-index: 4 - @i;
         }
@@ -60,7 +61,7 @@
           font-weight: 600;
         }
 
-        .spell{
+        .phonetic{
           display: block;
           line-height: 40rpx;
           text-align: center;

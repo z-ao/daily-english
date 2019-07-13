@@ -49,7 +49,7 @@ Component({
 
                 //绘制canvas
                 this._drawWordText(ctx, ctxWidth, cardData.word);
-                this._drawSpellText(ctx, ctxWidth, cardData.spell);
+                this._drawPhoneticText(ctx, ctxWidth, cardData.phonetic);
                 this._drawTranslationText(ctx, ctxWidth, cardData.translation);
                 ctx.draw();
 
@@ -175,7 +175,7 @@ Component({
         },
 
         //绘制发音
-        _drawSpellText(ctx, ctxW, text){
+        _drawPhoneticText(ctx, ctxW, text){
             const PADDING_TOP = scaling(70 + 55 + 20);
             const LINE_HEIGHT = scaling(30);
             const FONT_SIZE = scaling(30);
