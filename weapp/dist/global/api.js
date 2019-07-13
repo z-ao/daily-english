@@ -1,7 +1,9 @@
-const ApiOrigin = ' ';
+const ApiOrigin = 'http://daily-english.com:7001';
 
 const WEB_CONFIG = {
-    testApi: ApiOrigin + '/path'
+    word: {
+      random: ApiOrigin + '/word/random'
+    }
 };
 
 export default WEB_CONFIG;
