@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="container">
 	<view class="card__container">
-		<block wx:for="{{cardData}}" wx:key="{{item.id}}">
+		<block wx:for="{{cardData}}" wx:key="id">
 		  <view wx:if="{{index === 0}}"
 		  	class="card"
 		  	bind:touchstart="cardTouchstart"
@@ -14,11 +14,11 @@
 		      <text class="spell">{{item.spell}}</text>
 		      <text class="translation">{{item.translation}}</text>
 		    </view>
-		    <image 
+<!-- 		    <image 
 		    	src="{{ isPlay ? '../../assets/image/audio_play_active.svg' : '../../assets/image/audio_play.svg'}}" 
 		    	mode="aspectFit"
 		    	class="card-play"
-		    	bindtap="playEvent"></image>
+		    	bindtap="playEvent"></image> -->
 		  </view>
 
 		  <view wx:else 

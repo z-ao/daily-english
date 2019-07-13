@@ -1,10 +1,13 @@
 import regeneratorRuntime from '../../plugins/regenerator-runtime';
-import { canvasWrap, getBoundingClientRect } from '../../utils/dom';
+import { getBoundingClientRect } from '../../utils/dom';
+import { canvasWrap, drawRoundRectPath } from '../../utils/canvas';
 
 const { windowWidth } = wx.getSystemInfoSync();
 const DESIGN_WIDTH = 750; //设计图宽度
 const scaling = (rpx) => windowWidth / DESIGN_WIDTH * rpx;
 
+let dustIndex = 0;
+let dustArr = []
 Component({
     /**
      * 组件的属性列表
@@ -23,43 +26,47 @@ Component({
      * 组件的初始数据
      */
     data: {
-        show: false,
-        top: 0,
-        left: 0,
-        ctx: null
+        ctx: null,
+        dustArr: []
     },
 
-    ready() {
-        const ctx = wx.createCanvasContext('dust', this);
-        this.setData({ ctx });
-    },
 
     /**
      * 组件的方法列表
      */
     methods: {
-        async dustAnimal(cardData, top, left) {
-            this.setData({ top, left, show: true});
+        dustAnimal(cardData, top, left) {
 
-            const { ctx } = this.data;
-            const $ctx = await getBoundingClientRect('#dust', this);
-            const { width: ctxWidth, height: ctxHeight } = $ctx;
+            const id = dustIndex++;
+            const dustItem = { id, top, left };
+            dustArr.push(dustItem);
 
-            //绘制canvas
-            this._drawWordText(ctx, ctxWidth, cardData.word);
-            this._drawSpellText(ctx, ctxWidth, cardData.spell);
-            this._drawTranslationText(ctx, ctxWidth, cardData.translation);
-            ctx.draw();
+            this.setData({ dustArr }, async() => {
+                const ctx = wx.createCanvasContext(`dust${id}`, this);
+                const $ctx = await getBoundingClientRect(`#dust${id}`, this);
 
-            //画布生成arrayBuffer 获取显示像素 实现动画
-            const arrayBuffer = await this._canvasToArrayBuffer('dust', ctxWidth, ctxHeight);
-            const particleArr = this._calculateParticle(arrayBuffer, arrayBuffer.width / 2, arrayBuffer.height / 2);
-            const timer = setInterval(() => {
-                this._drawParticle(particleArr, ctx, () => {
-                    clearInterval(timer);
-                    this.setData({ show: false });
-                });
-            }, 120);
+                const { width: ctxWidth, height: ctxHeight } = $ctx;
+
+                //绘制canvas
+                this._drawWordText(ctx, ctxWidth, cardData.word);
+                this._drawSpellText(ctx, ctxWidth, cardData.spell);
+                this._drawTranslationText(ctx, ctxWidth, cardData.translation);
+                ctx.draw();
+
+                // //画布生成arrayBuffer 获取显示像素 实现动画
+                const arrayBuffer = await this._canvasToArrayBuffer(`dust${id}`, ctxWidth, ctxHeight);
+                const particleArr = this._calculateParticle(arrayBuffer, arrayBuffer.width / 2, arrayBuffer.height / 2);
+
+                const timer = setInterval(() => {
+                    this._drawParticle(particleArr, ctx, () => {
+                        clearInterval(timer);
+                        const index = dustArr.findIndex(item => item.id === id);
+                        dustArr.splice(index, 1);
+
+                        this.setData({ dustArr });
+                    });
+                }, 110);
+            });
         },
 
         //把canvas转成ArrayBuffer
@@ -87,18 +94,22 @@ Component({
 
             for(let c = 0; c <= cols; c++) {
                 for(let r = 0; r <= rows; r++) {
-                    //计算色值a的坐标值
-                    const indexA = ((c * gridHight * CWidth) + (r * gridWidth)) * 4;
-                    if (data[indexA] > 0) { //有色值
+                    //计算色值rgba的值
+                    const R = data[((c * CWidth * gridHight) + (r * gridWidth)) * 4];
+                    const G = data[((c * CWidth * gridHight) + (r * gridWidth)) * 4 + 1];
+                    const B = data[((c * CWidth * gridHight) + (r * gridWidth)) * 4 + 2];
+                    const A = data[((c * CWidth * gridHight) + (r * gridWidth)) * 4 + 3];
+                    if (A > 0) { //有色值
                         const particle = {
+                            rgba: [R, G, B, A],
                             x: r * gridWidth,
                             y: c * gridHight,
                             x1: r * gridWidth + Math.random() * 110 * gridWidth,
                             y1: c * gridHight + Math.random() * 40 * gridHight,
-                            delay: parseInt(Math.random() * c * 0.1),
+                            delay: parseInt(Math.random() * c * 0.1), //延迟
                             count: 0,
                             curTime: 0,
-                            duration: parseInt(Math.random() * 3 + 2),
+                            duration: parseInt(Math.random() * 3 + 2), //执行
                         };
                         particleArr.push(particle);
                     }
@@ -129,16 +140,15 @@ Component({
                         const curX = ease(curTime, particle.x, particle.x1 - particle.x, duration);
                         const curY = ease(curTime, particle.y, particle.y1 - particle.y, duration);
                         particle.curTime++;
-                        ctx.setFillStyle(`rgba(53, 53, 53, ${1 - curTime/duration})`);
+                        ctx.setFillStyle(`rgba(${particle.rgba[0]}, ${particle.rgba[1]}, ${particle.rgba[2]}, ${1 - curTime/duration})`);
                         ctx.fillRect(curX, curY, 1, 1);
                     } else { //粒子终点
-                        ctx.setFillStyle(`rgba(53, 53, 53, ${1 - curTime/duration})`);
+                        ctx.setFillStyle(`rgba(${particle.rgba[0]}, ${particle.rgba[1]}, ${particle.rgba[2]}, 0)`);
                         ctx.fillRect(particle.x1, particle.y1, 1, 1);
-
                         finishCount++;
                     }
                 } else {
-                    ctx.setFillStyle('rgba(53, 53, 53, 1)');
+                    ctx.setFillStyle(`rgba(${particle.rgba[0]}, ${particle.rgba[1]}, ${particle.rgba[2]}, ${particle.rgba[3]})`);
                     ctx.fillRect(particle.x, particle.y, 1, 1);
                 }
             });
