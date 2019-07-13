@@ -86,6 +86,64 @@
         height: 70rpx;
         transition: all .5s;
       }
+      .audio-play{
+        position: relative;
+        display: block;
+        flex: 0 0 70rpx;
+        width: 70rpx;
+        height: 70rpx;
+
+        .play-triangle{
+          position: absolute;
+          left: 0;
+          width: 30rpx;
+          height: 75rpx;
+          border-radius: 30rpx;
+          background-color: #515151;
+          transition: all .5s;
+
+          &:nth-child(1) {
+            top: 0;
+          }
+          &:nth-child(2) {
+            top: 0;
+            transform-origin: 15rpx 60rpx;
+            transform: rotate(60deg);
+          }
+          &:nth-child(3) {
+            top: 0;
+            transform-origin: 15rpx 15rpx;
+            transform: rotate(-60deg);
+          }
+        }
+      }
+      .play-triangle--wait{
+        .play-triangle{
+          animation: wait 2s linear infinite;
+        }
+      }
+      .play-triangle--play{
+        .play-triangle{
+          background-color: #003973;
+        }
+      }
+      @keyframes wait{
+        0% {
+          background-color: #ffe000;
+        }
+        25%{
+          background-color: #799f0c;
+        }
+        50%{
+          background-color: #e5e5be;
+        }
+        75%{
+          background-color: #799f0c;
+        }
+        100%{
+          background-color: #ffe000;
+        }
+      }
     }
   }
 }

@@ -9,7 +9,8 @@ let cardPointX = 0, cardPointY = 0
 Page({
 	wordAudio: null,
 	data: {
-		isPlay: false,
+		audioState: 0, //0停止 1加载 2播放中
+		audioClass: ['', 'play-triangle--wait', 'play-triangle--play'],
 
 		cardData: [],
 		cardStyle: '',
@@ -21,11 +22,7 @@ Page({
 
 	onLoad() {
 		this.initWordAudio()
-
-		//获取单词数据
-		wordModel.random().then(res => {
-			this.setData({ cardData: res })
-		})
+		this.fetchWordCard()
 	},
 
 	initWordAudio() {
@@ -33,12 +30,19 @@ Page({
 
 		//监听
 		audioInstance.onEnded(() => {
-			this.setData({ isPlay: false })
+			this.setData({ audioState: 0 })
 		})
 		audioInstance.onError((err) => {
-			console.log(err)
+			this.setData({ audioState: 0 })
+			console.log(err);
+			wx.showToast({icon: 'none', title: '抱歉～播放失败'})
 		})
-		audioInstance.onPlay( () => {}) //不监听播放失败
+		audioInstance.onWaiting(() =>{
+			this.setData({ audioState: 1 })
+		}) 
+		audioInstance.onPlay(() => {
+			this.setData({ audioState: 2 })
+		})
 
 		audioInstance.$play = (url) => {
 			if (!audioInstance.paused) { //不是暂停 停止状态
@@ -52,14 +56,20 @@ Page({
 	},
 
 	playAudioEvent(evt) {
-		const { isPlay } = this.data
-		if (isPlay) return
+		const { audioState } = this.data
+		if (audioState === 2) return
 
 		//播放录音
 		this.wordAudio.$play(evt.currentTarget.dataset.audio)
+	},
 
-		//设置状态
-		this.setData({ isPlay: true })
+	fetchWordCard() {
+		//获取单词数据
+		wordModel.random().then(res => {
+			const { cardData } = this.data
+			cardData.push(...res);
+			this.setData({ cardData })
+		})
 	},
 
 	cardTouchstart(evt) {
@@ -90,8 +100,11 @@ Page({
 			const dustComponent = this.selectComponent('#dust')
 			dustComponent.dustAnimal(card, cardRect.top, cardRect.left)
 
-			cardData.push(card)
-			this.setData({ cardData })
+			this.setData({ cardData });
+
+			if (cardData.length <=5) {
+				this.fetchWordCard();
+			}
 		}
 
 		this.touchStyle(isRemove ? 'remove' : 'end')
@@ -103,13 +116,18 @@ Page({
 	},
 
 	touchStyle(state) {
-		if (state === 'start' || state === 'end') {
-			this.setData({ cardStyle: 'transition-property: top, left; '})
+		if (state === 'start') {
+			this.setData({ cardStyle: 'transition-property: top, left, box-shadow; box-shadow: none;'})
+		}
+
+		if (state === 'end') {
+			this.setData({ cardStyle: 'transition-property: top, left;'})
 		}
 
 		if (state === 'remove') {
-			const transitionProp = 'transition-property: none;';
+			const transitionProp = 'transition-property: none;'
 			const transform = 'transform: translate3d(0, 0, -300rpx);'
+
 			this.setData({ cardStyle: transitionProp + transform}, () => {
 				const transitionProp = 'transition-property: transform;'
 				const transform = 'transform: translate3d(0, 0, 0);'
