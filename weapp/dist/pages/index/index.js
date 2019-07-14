@@ -40,9 +40,10 @@ Page({
 		audioInstance.onWaiting(() =>{
 			this.setData({ audioState: 1 })
 		}) 
-		audioInstance.onPlay(() => {
+		audioInstance.onCanplay(() => {
 			this.setData({ audioState: 2 })
 		})
+		audioInstance.onPlay(() => {}) //防止播放失败
 
 		audioInstance.$play = (url) => {
 			if (!audioInstance.paused) { //不是暂停 停止状态
