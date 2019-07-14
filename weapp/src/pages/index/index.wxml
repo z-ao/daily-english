@@ -14,12 +14,16 @@
 		      <text class="phonetic">{{item.phonetic}}</text>
 		      <text class="translation">{{item.translation}}</text>
 		    </view>
-		    <image 
-		    	src="{{ isPlay ? '../../assets/image/audio_play_active.svg' : '../../assets/image/audio_play.svg'}}" 
-		    	mode="aspectFit"
-		    	class="card-play"
+		    <view
+		    	class="audio-play {{ audioClass[audioState] }}"
 		    	bindtap="playAudioEvent"
-		    	data-audio="{{item.audio}}"></image>
+		    	data-audio="{{item.audio}}">
+		    	<view class="play-triangle"></view>
+		    	<view class="play-triangle"></view>
+		    	<view class="play-triangle"></view>
+
+		    	<view class="play-tips" hidden="{{ audioState !== 1}}">加载中</view>
+		    </view>
 		  </view>
 
 		  <view wx:else 
@@ -29,10 +33,13 @@
 		      <text class="phonetic">{{item.phonetic}}</text>
 		      <text class="translation">{{item.translation}}</text>
 		    </view>
-		    <image 
-		    	src="../../assets/image/audio_play.svg" 
-		    	mode="aspectFit"
-		    	class="card-play"></image>
+		    <view
+		    	class="audio-play"
+		    	bindtap="playAudioEvent">
+		    	<view class="play-triangle"></view>
+		    	<view class="play-triangle"></view>
+		    	<view class="play-triangle"></view>
+		    </view>
 		  </view>
 	  </block>
 	</view>

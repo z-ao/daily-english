@@ -79,12 +79,69 @@
         }
       }
 
-      .card-play{
+      .audio-play{
+        position: relative;
         display: block;
-        flex: 0 0 70rpx;
+        flex: 0 0 130rpx;
         width: 70rpx;
-        height: 70rpx;
-        transition: all .5s;
+        height: 130rpx;
+
+        .play-tips{
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 30rpx;
+          line-height: 30rpx;
+          text-align: center;
+          font-size: 22rpx;
+          color: #515151;
+        }
+
+        .play-triangle{
+          position: absolute;
+          left: 0;
+          width: 30rpx;
+          height: 75rpx;
+          border-radius: 30rpx;
+          background-color: #515151;
+          transition: all .5s;
+
+          &:nth-child(1) {
+            top: 0;
+          }
+          &:nth-child(2) {
+            top: 0;
+            transform-origin: 15rpx 60rpx;
+            transform: rotate(60deg);
+          }
+          &:nth-child(3) {
+            top: 0;
+            transform-origin: 15rpx 15rpx;
+            transform: rotate(-60deg);
+          }
+        }
+      }
+      .play-triangle--wait{
+        .play-triangle{
+          animation: wait 3s linear infinite;
+        }
+      }
+      .play-triangle--play{
+        .play-triangle{
+          background-color: #fe8c00;
+        }
+      }
+      @keyframes wait{
+        0% {
+          background-color: #515151;
+        }
+        40%{
+          background-color: #fe8c00;
+        }
+        100%{
+          background-color: #515151;
+        }
       }
     }
   }
