@@ -57,7 +57,7 @@ Page({
 
 	playAudioEvent(evt) {
 		const { audioState } = this.data
-		if (audioState === 2) return
+		if (audioState !== 0) return
 
 		//播放录音
 		this.wordAudio.$play(evt.currentTarget.dataset.audio)
@@ -100,7 +100,7 @@ Page({
 			const dustComponent = this.selectComponent('#dust')
 			dustComponent.dustAnimal(card, cardRect.top, cardRect.left)
 
-			this.setData({ cardData });
+			this.setData({ cardData, audioState: 0 });
 
 			if (cardData.length <=5) {
 				this.fetchWordCard();

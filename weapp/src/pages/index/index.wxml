@@ -21,6 +21,8 @@
 		    	<view class="play-triangle"></view>
 		    	<view class="play-triangle"></view>
 		    	<view class="play-triangle"></view>
+
+		    	<view class="play-tips" hidden="{{ audioState !== 1}}">加载中</view>
 		    </view>
 		  </view>
 
