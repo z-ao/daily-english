@@ -12,7 +12,7 @@ class WordController extends Controller {
 
     //设置单词录音
     const { host } = ctx.header;
-    const audioURL = (word) => `https://${host}/public/word/${word.slice(0, 1)}/${word}.mp3`;
+    const audioURL = (word) => `https://${host}/public/word/${word.slice(0, 1).toLocaleLowerCase()}/${word}.mp3`;
     wordRandom.forEach(item => {
       item.dataValues.phonetic = `/${item.dataValues.phonetic}/`;
       item.dataValues.audio = audioURL(item.word);
