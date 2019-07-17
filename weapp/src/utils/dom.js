@@ -95,18 +95,3 @@ export const getBoundingClientRect = function(select, context = wx) {
     }).exec();
   });
 }
-
-// 判断节点是否超出窗口视图
-const { windowWidth, screenHeight } = wx.getSystemInfoSync();
-export const isRectOverWindow = function({top, left, right, bottom}) {
-	if (top < 0 || left < 0) {
-		return true;
-	}
-	if (right > windowWidth) {
-		return true;
-	}
-	if (bottom > screenHeight) {
-		return true;
-	}
-	return false;
-}

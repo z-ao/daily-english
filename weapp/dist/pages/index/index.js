@@ -1,16 +1,15 @@
 import regeneratorRuntime from '../../plugins/regenerator-runtime'
 
-import { throttle, getBoundingClientRect, isRectOverWindow } from '../../utils/dom'
+import { throttle, getBoundingClientRect } from '../../utils/dom'
 import wordModel from '../../models/word'
 
 //卡片 拖拽
 let cardPointX = 0, cardPointY = 0
 
 Page({
-	wordAudio: null,
 	data: {
-		audioState: 0, //0停止 1加载 2播放中
-		audioClass: ['', 'play-triangle--wait', 'play-triangle--play'],
+		audioState: 0, //0停止 1加载 2播放中 3 加载失败
+		audioClass: ['', 'play-triangle--wait', 'play-triangle--play', 'play-triangle--error'],
 
 		cardData: [],
 		cardStyle: '',
@@ -25,6 +24,7 @@ Page({
 		this.fetchWordCard()
 	},
 
+	wordAudio: null,
 	initWordAudio() {
 		const audioInstance = wx.createInnerAudioContext()
 
@@ -32,16 +32,15 @@ Page({
 		audioInstance.onEnded(() => {
 			this.setData({ audioState: 0 })
 		})
-		audioInstance.onError((err) => {
-			this.setData({ audioState: 0 })
-			console.log(err);
-			wx.showToast({icon: 'none', title: '抱歉～播放失败'})
-		})
 		audioInstance.onWaiting(() =>{
 			this.setData({ audioState: 1 })
 		}) 
 		audioInstance.onCanplay(() => {
 			this.setData({ audioState: 2 })
+		})
+		audioInstance.onError((err) => {
+			this.setData({ audioState: 3 })
+			wx.showToast({icon: 'none', title: '抱歉～播放失败'})
 		})
 		audioInstance.onPlay(() => {}) //防止播放失败
 
@@ -55,7 +54,6 @@ Page({
 
 		this.wordAudio = audioInstance
 	},
-
 	playAudioEvent(evt) {
 		const { audioState } = this.data
 		if (audioState !== 0) return
@@ -81,7 +79,7 @@ Page({
 		this.touchStyle('start')
 	},
 
-	cardTouchmove: throttle(function(evt) {
+	cardTouchmove: throttle(async function(evt) {
 		const { clientX, clientY } = evt.changedTouches[0]
 
 		this.setData({
@@ -92,13 +90,14 @@ Page({
 
 	async cardTouchend() {
 		const cardRect = await getBoundingClientRect('.card')
-		const isRemove = isRectOverWindow(cardRect)
+		const isRemove = this.isRectOverWindow(cardRect)
 
 		if (isRemove) {
 			const { cardData } = this.data
 			const card = cardData.shift()
 
 			const dustComponent = this.selectComponent('#dust')
+			const cardRect = await getBoundingClientRect('.card')
 			dustComponent.dustAnimal(card, cardRect.top, cardRect.left)
 
 			this.setData({ cardData, audioState: 0 });
@@ -108,12 +107,27 @@ Page({
 			}
 		}
 
-		this.touchStyle(isRemove ? 'remove' : 'end')
+		this.touchStyle(isRemove ? 'remove' : 'end');
 
 		cardPointX = cardPointY = 0
 		this.setData({ 
 			cardPoint: { cardPointX, cardPointY }
 		})
+	},
+	// 判断节点是否超出窗口视图的自身1/4
+	isRectOverWindow({top, left, right, bottom, width, height}) {
+		const { windowWidth, screenHeight } = wx.getSystemInfoSync();
+		const buffer = 4;
+		if (top < -height / buffer || left < - width / buffer) {
+			return true;
+		}
+		if (right > windowWidth + width / buffer) {
+			return true;
+		}
+		if (bottom > screenHeight + height / buffer) {
+			return true;
+		}
+		return false;
 	},
 
 	touchStyle(state) {
