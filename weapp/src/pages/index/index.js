@@ -82,7 +82,6 @@ Page({
 	cardTouchmove: throttle(async function(evt) {
 		const { clientX, clientY } = evt.changedTouches[0]
 
-
 		this.setData({
 			'cardPoint.cardPointY': clientY - cardPointY,
 			'cardPoint.cardPointX': clientX - cardPointX
@@ -118,13 +117,14 @@ Page({
 	// 判断节点是否超出窗口视图的自身1/4
 	isRectOverWindow({top, left, right, bottom, width, height}) {
 		const { windowWidth, screenHeight } = wx.getSystemInfoSync();
-		if (top < -height / 4 || left < - width / 4) {
+		const buffer = 4;
+		if (top < -height / buffer || left < - width / buffer) {
 			return true;
 		}
-		if (right > windowWidth + width / 4) {
+		if (right > windowWidth + width / buffer) {
 			return true;
 		}
-		if (bottom > screenHeight + height / 4) {
+		if (bottom > screenHeight + height / buffer) {
 			return true;
 		}
 		return false;

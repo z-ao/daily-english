@@ -1,5 +1,6 @@
 <!--index.wxml-->
 <view class="container">
+	<view class="static-tips">Tips: 左右滑动切换卡片</view>
 	<view class="card__container">
 		<block wx:for="{{cardData}}" wx:key="id">
 		  <view wx:if="{{index === 0}}"
