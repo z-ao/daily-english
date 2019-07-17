@@ -3,7 +3,7 @@
 	<view class="card__container">
 		<block wx:for="{{cardData}}" wx:key="id">
 		  <view wx:if="{{index === 0}}"
-		  	class="card"
+		  	class="card {{ cardRemove ? 'card--remove' : ''}} "
 		  	bind:touchstart="cardTouchstart"
 		  	bind:touchmove="cardTouchmove"
 		  	bind:touchcancel="cardTouchend"

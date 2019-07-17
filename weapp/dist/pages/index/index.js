@@ -1,19 +1,19 @@
 import regeneratorRuntime from '../../plugins/regenerator-runtime'
 
-import { throttle, getBoundingClientRect, isRectOverWindow } from '../../utils/dom'
+import { throttle, getBoundingClientRect } from '../../utils/dom'
 import wordModel from '../../models/word'
 
 //卡片 拖拽
 let cardPointX = 0, cardPointY = 0
 
 Page({
-	wordAudio: null,
 	data: {
 		audioState: 0, //0停止 1加载 2播放中
 		audioClass: ['', 'play-triangle--wait', 'play-triangle--play'],
 
 		cardData: [],
 		cardStyle: '',
+		cardRemove: false,
 		cardPoint: {
 			cardPointX: 0,
 			cardPointY: 0
@@ -25,6 +25,7 @@ Page({
 		this.fetchWordCard()
 	},
 
+	wordAudio: null,
 	initWordAudio() {
 		const audioInstance = wx.createInnerAudioContext()
 
@@ -55,7 +56,6 @@ Page({
 
 		this.wordAudio = audioInstance
 	},
-
 	playAudioEvent(evt) {
 		const { audioState } = this.data
 		if (audioState !== 0) return
@@ -81,24 +81,27 @@ Page({
 		this.touchStyle('start')
 	},
 
-	cardTouchmove: throttle(function(evt) {
+	cardTouchmove: throttle(async function(evt) {
 		const { clientX, clientY } = evt.changedTouches[0]
+
+		const cardRect = await getBoundingClientRect('.card')
+		const cardRemove = this.isRectOverWindow(cardRect)
 
 		this.setData({
 			'cardPoint.cardPointY': clientY - cardPointY,
-			'cardPoint.cardPointX': clientX - cardPointX
+			'cardPoint.cardPointX': clientX - cardPointX,
+			'cardRemove': cardRemove
 		})
 	}, 200),
 
 	async cardTouchend() {
-		const cardRect = await getBoundingClientRect('.card')
-		const isRemove = isRectOverWindow(cardRect)
 
-		if (isRemove) {
+		if (this.data.cardRemove) {
 			const { cardData } = this.data
 			const card = cardData.shift()
 
 			const dustComponent = this.selectComponent('#dust')
+			const cardRect = await getBoundingClientRect('.card')
 			dustComponent.dustAnimal(card, cardRect.top, cardRect.left)
 
 			this.setData({ cardData, audioState: 0 });
@@ -108,12 +111,27 @@ Page({
 			}
 		}
 
-		this.touchStyle(isRemove ? 'remove' : 'end')
+		this.touchStyle(this.data.cardRemove ? 'remove' : 'end')
 
 		cardPointX = cardPointY = 0
 		this.setData({ 
-			cardPoint: { cardPointX, cardPointY }
+			cardPoint: { cardPointX, cardPointY },
+			cardRemove: false
 		})
+	},
+	// 判断节点是否超出窗口视图的自身1/4
+	isRectOverWindow({top, left, right, bottom, width, height}) {
+		const { windowWidth, screenHeight } = wx.getSystemInfoSync();
+		if (top < -height / 4 || left < - width / 4) {
+			return true;
+		}
+		if (right > windowWidth + width / 4) {
+			return true;
+		}
+		if (bottom > screenHeight + height / 4) {
+			return true;
+		}
+		return false;
 	},
 
 	touchStyle(state) {
