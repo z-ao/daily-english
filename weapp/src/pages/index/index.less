@@ -127,11 +127,6 @@
           animation: wait 3s linear infinite;
         }
       }
-      .play-triangle--play{
-        .play-triangle{
-          background-color: #fe8c00;
-        }
-      }
       @keyframes wait{
         0% {
           background-color: #fefefe;
@@ -143,10 +138,14 @@
           background-color: #fefefe;
         }
       }
-    }
-
-    .card--remove{
-      opacity: .7;
+      .play-triangle--play{
+        .play-triangle{
+          background-color: #fe8c00;
+        }
+      }
+      .play-triangle--error{
+        display: none;
+      }
     }
   }
 }

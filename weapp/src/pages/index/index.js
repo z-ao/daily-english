@@ -8,12 +8,11 @@ let cardPointX = 0, cardPointY = 0
 
 Page({
 	data: {
-		audioState: 0, //0停止 1加载 2播放中
-		audioClass: ['', 'play-triangle--wait', 'play-triangle--play'],
+		audioState: 0, //0停止 1加载 2播放中 3 加载失败
+		audioClass: ['', 'play-triangle--wait', 'play-triangle--play', 'play-triangle--error'],
 
 		cardData: [],
 		cardStyle: '',
-		cardRemove: false,
 		cardPoint: {
 			cardPointX: 0,
 			cardPointY: 0
@@ -33,16 +32,15 @@ Page({
 		audioInstance.onEnded(() => {
 			this.setData({ audioState: 0 })
 		})
-		audioInstance.onError((err) => {
-			this.setData({ audioState: 0 })
-			console.log(err);
-			wx.showToast({icon: 'none', title: '抱歉～播放失败'})
-		})
 		audioInstance.onWaiting(() =>{
 			this.setData({ audioState: 1 })
 		}) 
 		audioInstance.onCanplay(() => {
 			this.setData({ audioState: 2 })
+		})
+		audioInstance.onError((err) => {
+			this.setData({ audioState: 3 })
+			wx.showToast({icon: 'none', title: '抱歉～播放失败'})
 		})
 		audioInstance.onPlay(() => {}) //防止播放失败
 
@@ -84,19 +82,18 @@ Page({
 	cardTouchmove: throttle(async function(evt) {
 		const { clientX, clientY } = evt.changedTouches[0]
 
-		const cardRect = await getBoundingClientRect('.card')
-		const cardRemove = this.isRectOverWindow(cardRect)
 
 		this.setData({
 			'cardPoint.cardPointY': clientY - cardPointY,
-			'cardPoint.cardPointX': clientX - cardPointX,
-			'cardRemove': cardRemove
+			'cardPoint.cardPointX': clientX - cardPointX
 		})
 	}, 200),
 
 	async cardTouchend() {
+		const cardRect = await getBoundingClientRect('.card')
+		const isRemove = this.isRectOverWindow(cardRect)
 
-		if (this.data.cardRemove) {
+		if (isRemove) {
 			const { cardData } = this.data
 			const card = cardData.shift()
 
@@ -111,12 +108,11 @@ Page({
 			}
 		}
 
-		this.touchStyle(this.data.cardRemove ? 'remove' : 'end')
+		this.touchStyle(isRemove ? 'remove' : 'end');
 
 		cardPointX = cardPointY = 0
 		this.setData({ 
-			cardPoint: { cardPointX, cardPointY },
-			cardRemove: false
+			cardPoint: { cardPointX, cardPointY }
 		})
 	},
 	// 判断节点是否超出窗口视图的自身1/4

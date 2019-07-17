@@ -3,7 +3,7 @@
 	<view class="card__container">
 		<block wx:for="{{cardData}}" wx:key="id">
 		  <view wx:if="{{index === 0}}"
-		  	class="card {{ cardRemove ? 'card--remove' : ''}} "
+		  	class="card"
 		  	bind:touchstart="cardTouchstart"
 		  	bind:touchmove="cardTouchmove"
 		  	bind:touchcancel="cardTouchend"
@@ -15,7 +15,7 @@
 		      <text class="translation">{{item.translation}}</text>
 		    </view>
 		    <view
-		    	class="audio-play {{ audioClass[audioState] }}"
+		    	class="audio-play {{ audioClass[audioState] }} "
 		    	bindtap="playAudioEvent"
 		    	data-audio="{{item.audio}}">
 		    	<view class="play-triangle"></view>
