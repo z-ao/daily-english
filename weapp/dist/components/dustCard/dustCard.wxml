@@ -1,8 +1,0 @@
-<view class="dust__contaienr">
-  <canvas wx:for="{{dustArr}}"
-      wx:key="id"
-      canvas-id="dust{{item.id}}"
-      id="dust{{item.id}}"
-      style="top: {{item.top}}px; left: {{item.left}}px;" 
-      class="canvas"></canvas>
-</view>

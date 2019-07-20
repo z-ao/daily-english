@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "背单词",
-  "disableScroll": true,
-  "usingComponents": {
-    "c-dust-card": "/components/dustCard/dustCard"
-  }
-}
