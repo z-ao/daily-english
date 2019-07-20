@@ -27,6 +27,11 @@ const GULP_CONFIG = {
 		init: true,
 		TARGET_PATH: ['src/app.less', 'src/**/*.less'],
 		IGNORE_PATH: []
+	},
+
+	typescript_option: {
+		init: true,
+		TARGET_PATH: ['src/**/*.ts', 'src/app.ts']
 	}
 }
 
