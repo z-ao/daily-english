@@ -19,7 +19,7 @@
     "pretty": true,
     "strictPropertyInitialization": true,
     "typeRoots": [
-      "./typings"
+      "src/typings"
     ]
   },
   "include": [

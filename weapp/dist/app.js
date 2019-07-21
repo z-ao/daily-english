@@ -1,2 +1,4 @@
-wx.setInnerAudioOption({ obeyMuteSwitch: true }); //在静音模式下，也能播放声音
+"use strict";
+wx.setInnerAudioOption({ obeyMuteSwitch: true });
 App({});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiYXBwLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSxFQUFFLENBQUMsbUJBQW1CLENBQUMsRUFBRSxjQUFjLEVBQUUsSUFBSSxFQUFFLENBQUMsQ0FBQztBQUVqRCxHQUFHLENBQUMsRUFFSCxDQUFDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJ3eC5zZXRJbm5lckF1ZGlvT3B0aW9uKHsgb2JleU11dGVTd2l0Y2g6IHRydWUgfSk7IC8v5Zyo6Z2Z6Z+z5qih5byP5LiL77yM5Lmf6IO95pKt5pS+5aOw6Z+zXG5cbkFwcCh7XG5cbn0pO1xuIl19

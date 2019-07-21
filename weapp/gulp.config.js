@@ -7,7 +7,7 @@ const GULP_CONFIG = {
 	build_option: {
 		init: true,
 		TARGET_PATH: ['src/**'],
-		IGNORE_PATH: ['node_modules/**', 'src/app.less', 'src/**/*.less']
+		IGNORE_PATH: ['node_modules/**', 'src/app.less', 'src/**/*.less', 'src/typings', 'src/**/*.ts']
 	},
 
 	eslint_option: {

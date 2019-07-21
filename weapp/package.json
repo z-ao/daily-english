@@ -1,7 +1,7 @@
 {
-    "name": "10fund",
+    "name": "daily-english",
     "version": "1.0.0",
-    "description": "10fund",
+    "description": "daily-english",
     "main": "gulpfile.js",
     "scripts": {
         "build": "gulp",
@@ -9,7 +9,9 @@
         "page": "gulp template --pages",
         "com": "gulp template --components",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "tsc": "./node_modules/typescript/bin/tsc",
+        "compile": "tsc"
     },
     "keywords": [
         "miniprogram",
@@ -21,7 +23,7 @@
         "gulp-typescript": "^5.0.1",
         "lodash": ">=4.17.5",
         "minimatch": ">=3.0.2",
-        "typescript": "^3.5.3",
+        "typescript": "^3.1.6",
         "wx-server-sdk": "0.0.25"
     },
     "devDependencies": {
