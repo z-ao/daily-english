@@ -17,13 +17,10 @@
     "strict": true,
     "removeComments": true,
     "pretty": true,
-    "strictPropertyInitialization": true,
-    "typeRoots": [
-      "src/typings"
-    ]
+    "strictPropertyInitialization": true
   },
   "include": [
-    "./src/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

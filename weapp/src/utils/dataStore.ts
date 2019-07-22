@@ -6,6 +6,7 @@
  */
 
 class DataStore {
+    static instance: DataStore;
     static getInstance() {
         if (!DataStore.instance) {
             DataStore.instance = new DataStore();
@@ -13,11 +14,12 @@ class DataStore {
         return DataStore.instance;
     }
 
+    private map: Map<any, any>;
     constructor() {
         this.map = new Map();
     }
 
-    put(key, Value) {
+    put(key:any, Value:any): DataStore {
         if (typeof Value === 'function') { // 保存构造函数实例
             Value = new Value();
         }
@@ -25,11 +27,11 @@ class DataStore {
         return this;
     }
 
-    get(key) {
+    get(key:any): any {
         return this.map.get(key);
     }
 
-    destroy() {
+    destroy(): void {
         this.map.clear();
     }
 }

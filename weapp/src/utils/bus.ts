@@ -1,4 +1,5 @@
 class Bus {
+    static instance: Bus;
     static getInstance() {
         if (!Bus.instance) {
             Bus.instance = new Bus();
@@ -6,14 +7,13 @@ class Bus {
         return Bus.instance;
     }
 
+    private _watcher: {[propName: string]: Array<Function>} = {};
+
     constructor() {
-        this._watcher = {};
+
     }
 
-    on(name, handler) {
-        if (!(handler instanceof Function)) {
-            throw Error('第二个参数应该是函数,但获取的是' + typeof handler);
-        }
+    on(name: string, handler: Function): Bus {
 
         if (this._watcher[name]) {
             this._watcher[name].push(handler);
@@ -23,7 +23,7 @@ class Bus {
         return this;
     }
 
-    emit(name, ...args) {
+    emit(name: string, ...args: any): void {
         if (!this._watcher[name]) return;
 
         this._watcher[name].forEach(handler => {
@@ -31,7 +31,7 @@ class Bus {
         });
     }
 
-    off(name, handler) {
+    off(name: string, handler: Function): Bus {
         const index = this._watcher[name].indexOf(handler);
 
         if (index < 0) return this;

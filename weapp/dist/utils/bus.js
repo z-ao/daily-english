@@ -1,44 +1,42 @@
-class Bus {
-    static getInstance() {
+"use strict";
+exports.__esModule = true;
+var Bus = /** @class */ (function () {
+    function Bus() {
+        this._watcher = {};
+    }
+    Bus.getInstance = function () {
         if (!Bus.instance) {
             Bus.instance = new Bus();
         }
         return Bus.instance;
-    }
-
-    constructor() {
-        this._watcher = {};
-    }
-
-    on(name, handler) {
-        if (!(handler instanceof Function)) {
-            throw Error('第二个参数应该是函数,但获取的是' + typeof handler);
-        }
-
+    };
+    Bus.prototype.on = function (name, handler) {
         if (this._watcher[name]) {
             this._watcher[name].push(handler);
-        } else {
+        }
+        else {
             this._watcher[name] = [handler];
         }
         return this;
-    }
-
-    emit(name, ...args) {
-        if (!this._watcher[name]) return;
-
-        this._watcher[name].forEach(handler => {
-            handler(...args);
+    };
+    Bus.prototype.emit = function (name) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (!this._watcher[name])
+            return;
+        this._watcher[name].forEach(function (handler) {
+            handler.apply(void 0, args);
         });
-    }
-
-    off(name, handler) {
-        const index = this._watcher[name].indexOf(handler);
-
-        if (index < 0) return this;
+    };
+    Bus.prototype.off = function (name, handler) {
+        var index = this._watcher[name].indexOf(handler);
+        if (index < 0)
+            return this;
         this._watcher[name].splice(index, 1);
         return this;
-    }
-}
-
-
-export default Bus.getInstance();
+    };
+    return Bus;
+}());
+exports["default"] = Bus.getInstance();
