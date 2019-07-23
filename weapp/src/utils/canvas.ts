@@ -1,5 +1,5 @@
 
-export const canvasWrap = function (ctx, text, fontInfo, x, y, lineHeight, maxWidth){
+export const canvasWrap = function (ctx: wx.CanvasContext, text: string, fontInfo: string, x: number, y: number, lineHeight: number, maxWidth: number): void{
   ctx.font = fontInfo;
 
   const arrText = text.split('');
@@ -19,8 +19,8 @@ export const canvasWrap = function (ctx, text, fontInfo, x, y, lineHeight, maxWi
   }
 }
 
-export const drawRoundRectPath = function(ctx, width, height, radius){  
-  ctx.beginPath(0);  
+export const drawRoundRectPath = function(ctx: wx.CanvasContext, width: number, height: number, radius: number): void{  
+  ctx.beginPath();  
   //从右下角顺时针绘制，弧度从0到1/2PI  
   ctx.arc(width-radius,height-radius,radius,0,Math.PI/2);  
 
