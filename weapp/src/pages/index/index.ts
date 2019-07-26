@@ -1,17 +1,19 @@
-import regeneratorRuntime from '../../plugins/regenerator-runtime'
-
 import { throttle, getBoundingClientRect } from '../../utils/dom'
 import wordModel from '../../models/word'
 
 //卡片 拖拽
-let cardPointX = 0, cardPointY = 0
+let cardPointX: number = 0, cardPointY: number = 0
+
+interface audio extends wx.InnerAudioContext{
+	$play: Function
+}
 
 Page({
 	data: {
 		audioState: 0, //0停止 1加载 2播放中 3 加载失败
 		audioClass: ['', 'play-triangle--wait', 'play-triangle--play', 'play-triangle--error'],
 
-		cardData: [],
+		cardData: [] as any[],
 		cardStyle: '',
 		cardPoint: {
 			cardPointX: 0,
@@ -23,36 +25,36 @@ Page({
 		this.initWordAudio()
 		this.fetchWordCard()
 	},
-
-	wordAudio: null,
+	
+	wordAudio: {} as audio,
 	initWordAudio() {
 		const audioInstance = wx.createInnerAudioContext()
 
 		//监听
 		audioInstance.onEnded(() => {
-			this.setData({ audioState: 0 })
+			this.setData!({ audioState: 0 })
 		})
 		audioInstance.onWaiting(() =>{
-			this.setData({ audioState: 1 })
+			this.setData!({ audioState: 1 })
 		}) 
 		audioInstance.onCanplay(() => {
-			this.setData({ audioState: 2 })
+			this.setData!({ audioState: 2 })
 		})
-		audioInstance.onError((err) => {
-			this.setData({ audioState: 3 })
+		audioInstance.onError(() => {
+			this.setData!({ audioState: 3 })
 			wx.showToast({icon: 'none', title: '抱歉～播放失败'})
 		})
 		audioInstance.onPlay(() => {}) //防止播放失败
 
-		audioInstance.$play = (url) => {
-			if (!audioInstance.paused) { //不是暂停 停止状态
-				audioInstance.stop()
+		this.wordAudio = Object.assign(audioInstance, {
+			$play: (url: string) => {
+				if (!audioInstance.paused) { //不是暂停 停止状态
+					audioInstance.stop()
+				}
+				audioInstance.src = url
+				audioInstance.play()
 			}
-			audioInstance.src = url
-			audioInstance.play()
-		}
-
-		this.wordAudio = audioInstance
+		}) 
 	},
 	playAudioEvent(evt) {
 		const { audioState } = this.data
@@ -64,10 +66,10 @@ Page({
 
 	fetchWordCard() {
 		//获取单词数据
-		wordModel.random().then(res => {
+		wordModel.random().then((res: any[]) => {
 			const { cardData } = this.data
 			cardData.push(...res);
-			this.setData({ cardData })
+			this.setData!({ cardData })
 		})
 	},
 
@@ -81,7 +83,7 @@ Page({
 
 	cardTouchmove: throttle(async function(evt) {
 		const { clientX, clientY } = evt.changedTouches[0]
-
+		// @ts-ignore
 		this.setData({
 			'cardPoint.cardPointY': clientY - cardPointY,
 			'cardPoint.cardPointX': clientX - cardPointX
@@ -95,12 +97,13 @@ Page({
 		if (isRemove) {
 			const { cardData } = this.data
 			const card = cardData.shift()
-
+			// @ts-ignore
 			const dustComponent = this.selectComponent('#dust')
 			const cardRect = await getBoundingClientRect('.card')
+			// @ts-ignore
 			dustComponent.dustAnimal(card, cardRect.top, cardRect.left)
 
-			this.setData({ cardData, audioState: 0 });
+			this.setData!({ cardData, audioState: 0 });
 
 			if (cardData.length <=5) {
 				this.fetchWordCard();
@@ -110,7 +113,7 @@ Page({
 		this.touchStyle(isRemove ? 'remove' : 'end');
 
 		cardPointX = cardPointY = 0
-		this.setData({ 
+		this.setData!({ 
 			cardPoint: { cardPointX, cardPointY }
 		})
 	},
@@ -132,21 +135,21 @@ Page({
 
 	touchStyle(state) {
 		if (state === 'start') {
-			this.setData({ cardStyle: 'transition-property: top, left, box-shadow; box-shadow: none;'})
+			this.setData!({ cardStyle: 'transition-property: top, left, box-shadow; box-shadow: none;'})
 		}
 
 		if (state === 'end') {
-			this.setData({ cardStyle: 'transition-property: top, left;'})
+			this.setData!({ cardStyle: 'transition-property: top, left;'})
 		}
 
 		if (state === 'remove') {
 			const transitionProp = 'transition-property: none;'
 			const transform = 'transform: translate3d(0, 0, -300rpx);'
 
-			this.setData({ cardStyle: transitionProp + transform}, () => {
+			this.setData!({ cardStyle: transitionProp + transform}, () => {
 				const transitionProp = 'transition-property: transform;'
 				const transform = 'transform: translate3d(0, 0, 0);'
-				this.setData({ cardStyle: transitionProp + transform})
+				this.setData!({ cardStyle: transitionProp + transform})
 			});
 		}
 	}
