@@ -17,14 +17,7 @@
     "strict": true,
     "removeComments": true,
     "pretty": true,
-    "strictPropertyInitialization": true
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "miniprogram_dist",
-    "**/*.spec.ts"
-  ]
+    "strictPropertyInitialization": true,
+    "lib": ["es2015"]
+  }
 }

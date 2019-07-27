@@ -1,10 +1,13 @@
-const ApiOrigin = 'https://dd.shouyuemei.com';
+"use strict";
+exports.__esModule = true;
+var ApiOrigin = 'https://dd.shouyuemei.com';
 // const ApiOrigin = 'http://daily-english.com:7001';
-
-const WEB_CONFIG = {
+var WEB_CONFIG = {
     word: {
-      random: ApiOrigin + '/word/random'
+        random: ApiOrigin + '/word/random'
+    },
+    common: {
+        login: ''
     }
 };
-
-export default WEB_CONFIG;
+exports["default"] = WEB_CONFIG;

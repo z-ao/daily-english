@@ -428,11 +428,17 @@ backgroundAudioManager.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb
     /** 接口调用成功的回调函数 */
     success?: CanvasGetImageDataSuccessCallback;
   }
+  //hack
+  // interface CanvasGetImageDataSuccessCallbackResult {
+  //   /** 图像数据矩形的高度 */
+  //   height: number;
+  //   /** 图像数据矩形的宽度 */
+  //   width: number;
+  // }
   interface CanvasGetImageDataSuccessCallbackResult {
-    /** 图像数据矩形的高度 */
-    height: number;
-    /** 图像数据矩形的宽度 */
     width: number;
+    height: number;
+    data: Uint8ClampedArray;
   }
   interface CanvasPutImageDataOption {
     /** 画布标识，传入 `<canvas>` 组件的 canvas-id 属性。 */
@@ -11256,7 +11262,10 @@ wx.writeBLECharacteristicValue({
   type CanvasGetImageDataFailCallback = (res: GeneralCallbackResult) => void;
   /** 接口调用成功的回调函数 */
   type CanvasGetImageDataSuccessCallback = (
-    result: CanvasGetImageDataSuccessCallbackResult,
+    //hack
+    // result: CanvasGetImageDataSuccessCallbackResult,
+    width: number,
+    height: number,
     /** 图像像素点数据，一维数组，每四项表示一个像素点的 rgba */
     data: Uint8ClampedArray,
   ) => void;
