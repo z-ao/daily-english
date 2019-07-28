@@ -2,7 +2,7 @@
 export const inputBuilding = function (evt) {
 	const val = evt.detail.value;
 	const data = evt.target.dataset.bind;
-	// @ts-ignore
+
 	this.setData({[data]: val});
 }
 
@@ -80,7 +80,7 @@ export const throttle = function (handler: Function, delay = 200) {
 		let now = Date.now()
 
 		const args = _args.concat(evt);
-		// @ts-ignore
+
 		const that = this;
 		if (!last || now - last >= delay) {
 			last = now

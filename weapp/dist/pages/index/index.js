@@ -110,7 +110,6 @@ Page({
             var _a, clientX, clientY;
             return __generator(this, function (_b) {
                 _a = evt.changedTouches[0], clientX = _a.clientX, clientY = _a.clientY;
-                // @ts-ignore
                 this.setData({
                     'cardPoint.cardPointY': clientY - cardPointY,
                     'cardPoint.cardPointX': clientX - cardPointX
@@ -132,12 +131,9 @@ Page({
                         cardData = this.data.cardData;
                         card = cardData.shift();
                         dustComponent = this.selectComponent('#dust');
-                        return [4 /*yield*/, dom_1.getBoundingClientRect('.card')
-                            // @ts-ignore
-                        ];
+                        return [4 /*yield*/, dom_1.getBoundingClientRect('.card')];
                     case 2:
                         cardRect_1 = _a.sent();
-                        // @ts-ignore
                         dustComponent.dustAnimal(card, cardRect_1.top, cardRect_1.left);
                         this.setData({ cardData: cardData, audioState: 0 });
                         if (cardData.length <= 5) {

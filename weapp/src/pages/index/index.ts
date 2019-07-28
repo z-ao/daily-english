@@ -83,7 +83,7 @@ Page({
 
 	cardTouchmove: throttle(async function(evt) {
 		const { clientX, clientY } = evt.changedTouches[0]
-		// @ts-ignore
+
 		this.setData({
 			'cardPoint.cardPointY': clientY - cardPointY,
 			'cardPoint.cardPointX': clientX - cardPointX
@@ -97,10 +97,10 @@ Page({
 		if (isRemove) {
 			const { cardData } = this.data
 			const card = cardData.shift()
-			// @ts-ignore
+
 			const dustComponent = this.selectComponent('#dust')
 			const cardRect = await getBoundingClientRect('.card')
-			// @ts-ignore
+
 			dustComponent.dustAnimal(card, cardRect.top, cardRect.left)
 
 			this.setData!({ cardData, audioState: 0 });

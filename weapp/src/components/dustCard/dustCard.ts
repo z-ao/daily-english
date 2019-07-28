@@ -40,14 +40,12 @@ Component({
      */
     //@ts-ignore
     methods: {
-        //@ts-ignore
         dustAnimal(cardData, top: number, left: number) {
 
             const id = dustIndex++;
             const dustItem = { id, top, left };
             dustArr.push(dustItem);
 
-            //@ts-ignore
             this.setData({ dustArr }, async() => {
                 const ctx = wx.createCanvasContext(`dust${id}`, this);
                 const $ctx = await getBoundingClientRect(`#dust${id}`, this);
@@ -77,7 +75,6 @@ Component({
         },
 
         //把canvas转成ArrayBuffer
-        //@ts-ignore
         _canvasToArrayBuffer(canvasId, width, height, x=0, y=0): Promise<any> {
             return new Promise((resolve, reject) => {
                 wx.canvasGetImageData({
@@ -93,7 +90,6 @@ Component({
         },
 
         //计算各显示像素点信息
-        //@ts-ignore
         _calculateParticle(arrayBuffer: wx.CanvasGetImageDataSuccessCallbackResult, rows: number, cols: number) {
             const particleArr:any[] = [];
 
@@ -128,7 +124,6 @@ Component({
         },
 
         //绘制像素点
-        //@ts-ignore
         _drawParticle(particleArr, ctx, callback) {
             const ease = function (t, b, c, d) {
                 //ease js算法
@@ -171,7 +166,6 @@ Component({
         },
 
         //绘制word
-        //@ts-ignore
         _drawWordText(ctx, ctxW, text) {
             const PADDING_TOP = scaling(70);
             const LINE_HEIGHT = scaling(55);
@@ -186,7 +180,6 @@ Component({
         },
 
         //绘制发音
-        //@ts-ignore
         _drawPhoneticText(ctx, ctxW, text){
             const PADDING_TOP = scaling(70 + 55 + 20);
             const FONT_SIZE = scaling(30);
@@ -199,7 +192,6 @@ Component({
         },
 
         //绘制翻译
-        //@ts-ignore
         _drawTranslationText(ctx, ctxW, text){
             const PADDING_TOP = scaling(70 + 55 + 20 + 30 + 80);
             const PADDING_LEFT = scaling(70);

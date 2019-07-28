@@ -5,7 +5,6 @@ exports.inputBuilding = function (evt) {
     var _a;
     var val = evt.detail.value;
     var data = evt.target.dataset.bind;
-    // @ts-ignore
     this.setData((_a = {}, _a[data] = val, _a));
 };
 // 授权
@@ -83,7 +82,6 @@ exports.throttle = function (handler, delay) {
     return function (evt) {
         var now = Date.now();
         var args = _args.concat(evt);
-        // @ts-ignore
         var that = this;
         if (!last || now - last >= delay) {
             last = now;

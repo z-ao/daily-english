@@ -64,13 +64,11 @@ Component({
      */
     //@ts-ignore
     methods: {
-        //@ts-ignore
         dustAnimal: function (cardData, top, left) {
             var _this = this;
             var id = dustIndex++;
             var dustItem = { id: id, top: top, left: left };
             dustArr.push(dustItem);
-            //@ts-ignore
             this.setData({ dustArr: dustArr }, function () { return __awaiter(_this, void 0, void 0, function () {
                 var ctx, $ctx, ctxWidth, ctxHeight, arrayBuffer, particleArr, timer;
                 var _this = this;
@@ -106,7 +104,6 @@ Component({
             }); });
         },
         //把canvas转成ArrayBuffer
-        //@ts-ignore
         _canvasToArrayBuffer: function (canvasId, width, height, x, y) {
             var _this = this;
             if (x === void 0) { x = 0; }
@@ -124,7 +121,6 @@ Component({
             });
         },
         //计算各显示像素点信息
-        //@ts-ignore
         _calculateParticle: function (arrayBuffer, rows, cols) {
             var particleArr = [];
             var CWidth = arrayBuffer.width, CHeight = arrayBuffer.height, data = arrayBuffer.data;
@@ -156,7 +152,6 @@ Component({
             return particleArr;
         },
         //绘制像素点
-        //@ts-ignore
         _drawParticle: function (particleArr, ctx, callback) {
             var ease = function (t, b, c, d) {
                 //ease js算法
@@ -196,7 +191,6 @@ Component({
             ctx.draw();
         },
         //绘制word
-        //@ts-ignore
         _drawWordText: function (ctx, ctxW, text) {
             var PADDING_TOP = scaling(70);
             var LINE_HEIGHT = scaling(55);
@@ -208,7 +202,6 @@ Component({
             ctx.fillText(text, ctxW / 2, y, ctxW);
         },
         //绘制发音
-        //@ts-ignore
         _drawPhoneticText: function (ctx, ctxW, text) {
             var PADDING_TOP = scaling(70 + 55 + 20);
             var FONT_SIZE = scaling(30);
@@ -219,7 +212,6 @@ Component({
             ctx.fillText(text, ctxW / 2, y, ctxW);
         },
         //绘制翻译
-        //@ts-ignore
         _drawTranslationText: function (ctx, ctxW, text) {
             var PADDING_TOP = scaling(70 + 55 + 20 + 30 + 80);
             var PADDING_LEFT = scaling(70);

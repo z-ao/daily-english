@@ -173,7 +173,9 @@ declare interface BaseComponent extends ComponentLifetimes {
   observers?: object;
   /** object组件的方法，包括事件响应函数和任意的自定义方法，关于事件响应函数的使用，参见 [组件事件](events.md) */
   methods?: {
-    [methodName: string]: (this: WxComponent) => any | void;
+    // [methodName: string]: (this: WxComponent) => any | void;
+    //hack
+    [methodName: string]: Function
   };
   /** 类似于mixins和traits的组件间代码复用机制，参见 [behaviors](behaviors.md) */
   behaviors?: string[];
