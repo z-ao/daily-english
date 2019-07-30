@@ -2,7 +2,7 @@
 export const inputBuilding = function (evt) {
 	const val = evt.detail.value;
 	const data = evt.target.dataset.bind;
-	// @ts-ignore
+
 	this.setData({[data]: val});
 }
 
@@ -80,7 +80,7 @@ export const throttle = function (handler: Function, delay = 200) {
 		let now = Date.now()
 
 		const args = _args.concat(evt);
-		// @ts-ignore
+
 		const that = this;
 		if (!last || now - last >= delay) {
 			last = now
@@ -90,7 +90,7 @@ export const throttle = function (handler: Function, delay = 200) {
 }
 
 // 获的节点位置信息
-export const getBoundingClientRect = function(select: string, context = wx) {
+export const getBoundingClientRect = function(select: string, context = wx): Promise<wx.BoundingClientRectCallbackResult> {
 	return new Promise((resolve) => {
     context.createSelectorQuery().select(select).boundingClientRect(function(res) {
       resolve(res);

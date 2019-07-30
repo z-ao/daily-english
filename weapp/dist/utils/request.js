@@ -1,33 +1,34 @@
-const Methods = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT'];
-
-class SafeRequest {
-    static getInstance() {
-        if (!SafeRequest.instance) {
-            SafeRequest.instance = new SafeRequest();
-        }
-        return SafeRequest.instance;
-    }
-
-    constructor() {
-        Methods.forEach(method => {
-            const key = method.toLowerCase();
-            this[key] = this._requestInit(method);
+"use strict";
+exports.__esModule = true;
+var Methods = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT'];
+var SafeRequest = /** @class */ (function () {
+    function SafeRequest() {
+        var _this = this;
+        Methods.forEach(function (method) {
+            var key = method.toLowerCase();
+            _this[key] = _this._requestInit(method);
         });
     }
-
-    _requestInit(method) {
+    SafeRequest.getInstance = function () {
+        if (!this.instance) {
+            this.instance = new SafeRequest();
+        }
+        return this.instance;
+    };
+    SafeRequest.prototype._requestInit = function (method) {
         return function (url, data) {
-            return new Promise((reslove, reject) => {
+            return new Promise(function (reslove, reject) {
                 wx.request({
-                    url,
-                    header: null,
-                    data,
-                    method,
+                    url: url,
+                    header: {},
+                    data: data,
+                    method: method,
                     dataType: 'json',
-                    success: res => {
+                    success: function (res) {
                         if (res.statusCode === 200) {
                             reslove(res.data);
-                        } else {
+                        }
+                        else {
                             reject(res);
                         }
                     },
@@ -35,7 +36,7 @@ class SafeRequest {
                 });
             });
         };
-    }
-}
-
-export default SafeRequest.getInstance();
+    };
+    return SafeRequest;
+}());
+exports["default"] = SafeRequest.getInstance();

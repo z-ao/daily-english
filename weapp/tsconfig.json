@@ -6,7 +6,7 @@
     "target": "ES5",
     "allowJs": false,
     "experimentalDecorators": true,
-    "noImplicitThis": true,
+    "noImplicitThis": false,
     "noImplicitReturns": true,
     "alwaysStrict": true,
     "inlineSourceMap": true,
@@ -18,13 +18,5 @@
     "removeComments": true,
     "pretty": true,
     "strictPropertyInitialization": true
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "miniprogram_dist",
-    "**/*.spec.ts"
-  ]
+  }
 }

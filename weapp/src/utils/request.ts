@@ -1,12 +1,14 @@
 const Methods = ['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT'];
 
 class SafeRequest {
+    [propName: string]: Function;
+
     static instance: SafeRequest;
     static getInstance() {
-        if (!SafeRequest.instance) {
-            SafeRequest.instance = new SafeRequest();
+        if (!this.instance) {
+            this.instance = new SafeRequest();
         }
-        return SafeRequest.instance;
+        return this.instance;
     }
 
     constructor() {
@@ -17,7 +19,7 @@ class SafeRequest {
     }
 
     _requestInit(method) {
-        return function (url: string, data: any) {
+        return function (url: string, data?: any): Promise<string | object | ArrayBuffer> {
             return new Promise((reslove, reject) => {
                 wx.request({
                     url,
