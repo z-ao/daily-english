@@ -90,7 +90,7 @@ export const throttle = function (handler: Function, delay = 200) {
 }
 
 // 获的节点位置信息
-export const getBoundingClientRect = function(select: string, context = wx): Promise<wx.BoundingClientRectCallbackResult> {
+export const getBoundingClientRect = function(select: string, context = wx): Promise<WechatMiniprogram.BoundingClientRectCallbackResult> {
 	return new Promise((resolve) => {
     context.createSelectorQuery().select(select).boundingClientRect(function(res) {
       resolve(res);

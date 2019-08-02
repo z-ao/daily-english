@@ -31,7 +31,7 @@ const GULP_CONFIG = {
 
 	typescript_option: {
 		init: true,
-		TARGET_PATH: ['src/**/*.ts', 'src/app.ts']
+		TARGET_PATH: ['src/**/*.ts', 'src/app.ts', 'node_modules/miniprogram-api-typings/index.d.ts', 'node_modules/typescript/lib/lib.esnext.full.d.ts']
 	}
 }
 

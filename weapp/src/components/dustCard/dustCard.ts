@@ -22,7 +22,8 @@ Component({
     properties: {
         cardData: {
             type: Object,
-            value: null
+            value: null,
+            optionalTypes: []
         }
     },
 
@@ -40,6 +41,7 @@ Component({
      */
     //@ts-ignore
     methods: {
+        //@ts-ignore
         dustAnimal(cardData, top: number, left: number) {
 
             const id = dustIndex++;
@@ -75,6 +77,7 @@ Component({
         },
 
         //把canvas转成ArrayBuffer
+        //@ts-ignore
         _canvasToArrayBuffer(canvasId, width, height, x=0, y=0): Promise<any> {
             return new Promise((resolve, reject) => {
                 wx.canvasGetImageData({
@@ -90,7 +93,8 @@ Component({
         },
 
         //计算各显示像素点信息
-        _calculateParticle(arrayBuffer: wx.CanvasGetImageDataSuccessCallbackResult, rows: number, cols: number) {
+        //@ts-ignore
+        _calculateParticle(arrayBuffer: WechatMiniprogram.CanvasGetImageDataSuccessCallbackResult, rows: number, cols: number) {
             const particleArr:any[] = [];
 
             const { width: CWidth, height: CHeight, data } = arrayBuffer;
@@ -124,6 +128,7 @@ Component({
         },
 
         //绘制像素点
+        //@ts-ignore
         _drawParticle(particleArr, ctx, callback) {
             const ease = function (t, b, c, d) {
                 //ease js算法
@@ -166,6 +171,7 @@ Component({
         },
 
         //绘制word
+        //@ts-ignore
         _drawWordText(ctx, ctxW, text) {
             const PADDING_TOP = scaling(70);
             const LINE_HEIGHT = scaling(55);
@@ -180,6 +186,7 @@ Component({
         },
 
         //绘制发音
+        //@ts-ignore
         _drawPhoneticText(ctx, ctxW, text){
             const PADDING_TOP = scaling(70 + 55 + 20);
             const FONT_SIZE = scaling(30);
@@ -192,6 +199,7 @@ Component({
         },
 
         //绘制翻译
+        //@ts-ignore
         _drawTranslationText(ctx, ctxW, text){
             const PADDING_TOP = scaling(70 + 55 + 20 + 30 + 80);
             const PADDING_LEFT = scaling(70);

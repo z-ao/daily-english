@@ -3,7 +3,7 @@
     "strictNullChecks": true,
     "noImplicitAny": false,
     "module": "CommonJS",
-    "target": "ES5",
+    "target": "es5",
     "allowJs": false,
     "experimentalDecorators": true,
     "noImplicitThis": false,
@@ -18,5 +18,10 @@
     "removeComments": true,
     "pretty": true,
     "strictPropertyInitialization": true
-  }
+  },
+  "include": [
+    "src/**/*.ts", 
+    "node_modules/miniprogram-api-typings/index.d.ts", 
+    "node_modules/typescript/lib/lib.esnext.full.d.ts"
+  ]
 }

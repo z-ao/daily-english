@@ -4,7 +4,7 @@ import wordModel from '../../models/word'
 //卡片 拖拽
 let cardPointX: number = 0, cardPointY: number = 0
 
-interface audio extends wx.InnerAudioContext{
+interface audio extends WechatMiniprogram.InnerAudioContext{
 	$play: Function
 }
 
