@@ -49,7 +49,7 @@
         "gulp-sourcemaps": "^2.6.5",
         "require-dir": "1.1.0",
         "vinyl-named": "1.1.0",
-        "webpack": "3.4.1",
+        "webpack": "5.94.0",
         "webpack-stream": "5.1.1"
     }
 }
